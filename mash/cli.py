@@ -15,6 +15,8 @@ def ask(question: str, model: Optional[str] = 'gpt4'):
     """Ask a question to the specified LLM model"""
     try:
         model_handler = get_model_handler(model)
+        click.echo("\n")
+        click.echo("Querying {} ...\n".format(model))
         for chunk in model_handler.stream_response(question):
             click.echo(chunk, nl=False)
         click.echo()

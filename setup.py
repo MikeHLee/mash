@@ -1,4 +1,14 @@
+import subprocess
+import sys
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+    def run(self):
+        install.run(self)
+        # Execute the post-install script
+        subprocess.call([sys.executable, 'scripts/post_install.py'])
 
 setup(
     name="mash",
@@ -16,12 +26,15 @@ setup(
             "mash=mash.cli:cli",
         ],
     },
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="Master Shell - A unified CLI for interacting with LLMs and other tools",
+    cmdclass={
+        'install': PostInstallCommand,
+    },
+    author="Michael Lee",
+    author_email="leemichael289@gmail.com",
+    description="MASH - Master Shell for interacting with various LLM providers and other tools",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/mash",
+    url="https://github.com/MikeHLee/mash",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
